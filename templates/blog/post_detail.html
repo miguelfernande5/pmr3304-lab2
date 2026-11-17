@@ -10,4 +10,16 @@
   <a href="{% url 'post_delete' post.pk %}">Remover</a> |
   <a href="{% url 'post_list' %}">Voltar à listagem</a>
 </p>
+
+<h2>Comentários ({{ post.comments.count }})</h2>
+<p><a href="{% url 'comment_create' post.pk %}">Escrever um comentário</a></p>
+{% for comentario in post.comments.all %}
+  <div class="comentario">
+    <strong>{{ comentario.autor.username }}</strong>
+    <span class="meta">em {{ comentario.data_postagem|date:"d/m/Y H:i" }}</span>
+    <p>{{ comentario.texto|linebreaksbr }}</p>
+  </div>
+{% empty %}
+  <p>Ainda não há comentários neste post.</p>
+{% endfor %}
 {% endblock %}
