@@ -4,11 +4,27 @@ from django.urls import reverse
 from django.utils import timezone
 
 
+class Category(models.Model):
+    nome = models.CharField('Nome', max_length=100)
+    descricao = models.TextField('Descrição', blank=True)
+
+    class Meta:
+        ordering = ['nome']
+        verbose_name = 'categoria'
+        verbose_name_plural = 'categorias'
+
+    def __str__(self):
+        return self.nome
+
+
 class Post(models.Model):
     titulo = models.CharField('Título', max_length=200)
     # O conteúdo é armazenado como código HTML e renderizado com o filtro safe.
     conteudo = models.TextField('Conteúdo (HTML)', help_text='Conteúdo da postagem em HTML')
     data_postagem = models.DateTimeField('Data de postagem', default=timezone.now)
+    # Um post pode estar em várias categorias (e uma categoria tem vários posts)
+    categories = models.ManyToManyField(Category, related_name='posts', blank=True,
+                                        verbose_name='Categorias')
 
     def __str__(self):
         return self.titulo
