@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Blog PMR3304{% endblock %}</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 1rem; line-height: 1.5; }
+    header { border-bottom: 2px solid #333; padding-bottom: .5rem; margin-bottom: 1rem; }
+    header a, header form { display: inline; margin-right: 1rem; }
+    header button { background: none; border: none; color: #0645ad; cursor: pointer; font-size: 1rem; padding: 0; }
+    .comentario { border-left: 3px solid #ccc; padding-left: .75rem; margin: 1rem 0; }
+    .meta { color: #666; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="{% url 'post_list' %}"><strong>Blog PMR3304</strong></a>
+    <a href="{% url 'post_list' %}">Início</a>
+    <a href="{% url 'post_create' %}">Novo post</a>
+    {% if user.is_authenticated %}
+      <span class="meta">Olá, {{ user.username }}</span>
+      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button type="submit">Sair</button></form>
+    {% else %}
+      <a href="{% url 'login' %}">Entrar</a>
+    {% endif %}
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
