@@ -5,3 +5,8 @@ venv/
 .venv/
 staticfiles/
 relatorio/relatorio.pdf
+relatorio/
+relatorio.pdf
+relatorio/dados.json
+relatorio/gerar_relatorio.py
+relatorio/
