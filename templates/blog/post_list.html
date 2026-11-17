@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
-{% block title %}Posts{% endblock %}
+{% block title %}{% if categoria %}Categoria: {{ categoria.nome }}{% else %}Posts{% endif %}{% endblock %}
 {% block content %}
-<h1>Posts</h1>
+{% if categoria %}
+  <h1>Categoria: {{ categoria.nome }}</h1>
+  <p>{{ categoria.descricao }}</p>
+{% else %}
+  <h1>Posts</h1>
+{% endif %}
 <ul>
   {% for post in posts %}
     <li>
@@ -9,8 +14,12 @@
       <span class="meta">({{ post.data_postagem|date:"d/m/Y H:i" }})</span>
     </li>
   {% empty %}
-    <li>Nenhum post cadastrado.</li>
+    <li>Nenhum post {% if categoria %}nesta categoria{% else %}cadastrado{% endif %}.</li>
   {% endfor %}
 </ul>
-<p><a href="{% url 'post_create' %}">Criar novo post</a></p>
+{% if categoria %}
+  <p><a href="{% url 'category_list' %}">Voltar às categorias</a></p>
+{% else %}
+  <p><a href="{% url 'post_create' %}">Criar novo post</a></p>
+{% endif %}
 {% endblock %}

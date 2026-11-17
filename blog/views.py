@@ -6,7 +6,7 @@ from django.views.generic import (
 )
 
 from .forms import CommentForm
-from .models import Post
+from .models import Category, Post
 
 
 class PostListView(ListView):
@@ -51,3 +51,17 @@ def comment_create(request, pk):
     else:
         form = CommentForm()
     return render(request, 'blog/comment_form.html', {'form': form, 'post': post})
+
+
+def category_list(request):
+    """Lista todas as categorias."""
+    categorias = Category.objects.all()
+    return render(request, 'blog/category_list.html', {'categorias': categorias})
+
+
+def category_detail(request, pk):
+    """Lista os posts de uma categoria, reaproveitando post_list.html."""
+    categoria = get_object_or_404(Category, pk=pk)  # 404 se não existir
+    posts = categoria.posts.order_by('-data_postagem')
+    return render(request, 'blog/post_list.html',
+                  {'posts': posts, 'categoria': categoria})
